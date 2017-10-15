@@ -36,56 +36,65 @@ class ImageLoad extends React.Component {
       onPress()
     }
   }
-  render() {
+
+  renderImage() {
     const {
-      style, source, resizeMode, borderRadius, children,
+        style, source, resizeMode, borderRadius, children,
       loadingStyle, placeholderSource, placeholderStyle,
-      customImagePlaceholderDefaultStyle
-    } = this.props;
+      customImagePlaceholderDefaultStyle, onPress
+      } = this.props;
     return (
-      <TouchableWithoutFeedback onPress={() => this.onPress()} >
-        <ImageBackground
-          onLoadEnd={this.onLoadEnd.bind(this)}
-          onError={this.onError.bind(this)}
-          style={[styles.backgroundImage, style]}
-          source={source}
-          resizeMode={resizeMode}
-          borderRadius={borderRadius}
-        >
-          {
-            (this.state.isLoaded && !this.state.isError) ? children :
-              <TouchableWithoutFeedback onPress={() => this.onPress()} >
-                <View style={[styles.viewImageStyles, { borderRadius: borderRadius }]}>
-                  {
-                    this.props.isShowActivity &&
-                    <ActivityIndicator
-                      style={styles.activityIndicator}
-                      size={loadingStyle ? loadingStyle.size : 'small'}
-                      color={loadingStyle ? loadingStyle.color : 'gray'}
-                    />
-                  }
-                  <Image
-                    style={placeholderStyle ? placeholderStyle : [styles.imagePlaceholderStyles, customImagePlaceholderDefaultStyle]}
-                    source={placeholderSource ? placeholderSource : require('./Images/empty-image.png')}
-                  >
-                  </Image>
-                </View>
-              </TouchableWithoutFeedback>
-          }
-          {
-            this.props.children &&
-            <View style={styles.viewChildrenStyles}>
+      <Image
+        onLoadEnd={this.onLoadEnd.bind(this)}
+        onError={this.onError.bind(this)}
+        style={[styles.backgroundImage, style]}
+        source={source}
+        resizeMode={resizeMode}
+        borderRadius={borderRadius}
+      >
+        {(this.state.isLoaded && !this.state.isError) ? children :
+          <TouchableWithoutFeedback onPress={() => this.onPress()} >
+            <View style={[styles.viewImageStyles, { borderRadius: borderRadius }]}>
               {
-                this.props.children
+                this.props.isShowActivity &&
+                <ActivityIndicator
+                  style={styles.activityIndicator}
+                  size={loadingStyle ? loadingStyle.size : 'small'}
+                  color={loadingStyle ? loadingStyle.color : 'gray'}
+                />
               }
+              <Image
+                style={placeholderStyle ? placeholderStyle : [styles.imagePlaceholderStyles, customImagePlaceholderDefaultStyle]}
+                source={placeholderSource ? placeholderSource : require('./Images/empty-image.png')}
+              >
+              </Image>
             </View>
-          }
-        </ImageBackground>
-      </TouchableWithoutFeedback>
-    );
+          </TouchableWithoutFeedback>}
+        {/*
+          this.props.children &&
+          <View style={styles.viewChildrenStyles}>
+            {
+              this.props.children
+            }
+          </View>
+          */}
+      </Image>
+    )
+  }
+
+  render() {
+    const { onPress } = this.props;
+    if (onPress) {
+      return (
+        <TouchableWithoutFeedback onPress={() => this.onPress()} >
+          {this.renderImage()}
+        </TouchableWithoutFeedback>
+      );
+    } else {
+      return this.renderImage();
+    }
   }
 }
-
 const styles = {
   backgroundImage: {
     position: 'relative',
