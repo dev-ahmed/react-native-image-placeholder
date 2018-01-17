@@ -1,6 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Image, ImageBackground, ActivityIndicator, View, TouchableWithoutFeedback } from 'react-native';
+import {
+  Image,
+  ImageBackground,
+  ActivityIndicator,
+  View,
+  TouchableWithoutFeedback,
+} from 'react-native';
 
 class ImageLoad extends React.Component {
   static propTypes = {
@@ -15,36 +21,43 @@ class ImageLoad extends React.Component {
     super(props);
     this.state = {
       isLoaded: false,
-      isError: false
+      isError: false,
     };
   }
 
   onLoadEnd() {
     this.setState({
-      isLoaded: true
+      isLoaded: true,
     });
   }
 
   onError() {
     this.setState({
-      isError: true
+      isError: true,
     });
   }
   onPress() {
     let { onPress } = this.props;
     if (onPress) {
-      onPress()
+      onPress();
     }
   }
 
   renderImage() {
     const {
-        style, source, resizeMode, borderRadius, children,
-      loadingStyle, placeholderSource, placeholderStyle,
-      customImagePlaceholderDefaultStyle, onPress
-      } = this.props;
+      style,
+      source,
+      resizeMode,
+      borderRadius,
+      children,
+      loadingStyle,
+      placeholderSource,
+      placeholderStyle,
+      customImagePlaceholderDefaultStyle,
+      onPress,
+    } = this.props;
     return (
-      <Image
+      <ImageBackground
         onLoadEnd={this.onLoadEnd.bind(this)}
         onError={this.onError.bind(this)}
         style={[styles.backgroundImage, style]}
@@ -52,24 +65,38 @@ class ImageLoad extends React.Component {
         resizeMode={resizeMode}
         borderRadius={borderRadius}
       >
-        {(this.state.isLoaded && !this.state.isError) ? children :
-          <TouchableWithoutFeedback onPress={() => this.onPress()} >
-            <View style={[styles.viewImageStyles, { borderRadius: borderRadius }]}>
-              {
-                this.props.isShowActivity &&
+        {this.state.isLoaded && !this.state.isError ? (
+          children
+        ) : (
+          <TouchableWithoutFeedback onPress={() => this.onPress()}>
+            <View
+              style={[styles.viewImageStyles, { borderRadius: borderRadius }]}
+            >
+              {this.props.isShowActivity && (
                 <ActivityIndicator
                   style={styles.activityIndicator}
                   size={loadingStyle ? loadingStyle.size : 'small'}
                   color={loadingStyle ? loadingStyle.color : 'gray'}
                 />
-              }
+              )}
               <Image
-                style={placeholderStyle ? placeholderStyle : [styles.imagePlaceholderStyles, customImagePlaceholderDefaultStyle]}
-                source={placeholderSource ? placeholderSource : require('./Images/empty-image.png')}
-              >
-              </Image>
+                style={
+                  placeholderStyle
+                    ? placeholderStyle
+                    : [
+                        styles.imagePlaceholderStyles,
+                        customImagePlaceholderDefaultStyle,
+                      ]
+                }
+                source={
+                  placeholderSource
+                    ? placeholderSource
+                    : require('./Images/empty-image.png')
+                }
+              />
             </View>
-          </TouchableWithoutFeedback>}
+          </TouchableWithoutFeedback>
+        )}
         {/*
           this.props.children &&
           <View style={styles.viewChildrenStyles}>
@@ -78,15 +105,15 @@ class ImageLoad extends React.Component {
             }
           </View>
           */}
-      </Image>
-    )
+      </ImageBackground>
+    );
   }
 
   render() {
     const { onPress } = this.props;
     if (onPress) {
       return (
-        <TouchableWithoutFeedback onPress={() => this.onPress()} >
+        <TouchableWithoutFeedback onPress={() => this.onPress()}>
           {this.renderImage()}
         </TouchableWithoutFeedback>
       );
@@ -108,14 +135,14 @@ const styles = {
     flex: 1,
     backgroundColor: '#e9eef1',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   imagePlaceholderStyles: {
     width: 100,
     height: 100,
     resizeMode: 'contain',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   viewChildrenStyles: {
     top: 0,
@@ -123,8 +150,8 @@ const styles = {
     right: 0,
     bottom: 0,
     position: 'absolute',
-    backgroundColor: 'transparent'
-  }
-}
+    backgroundColor: 'transparent',
+  },
+};
 
 export default ImageLoad;
