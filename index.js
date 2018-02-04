@@ -58,6 +58,7 @@ class ImageLoad extends React.Component {
     } = this.props;
     return (
       <ImageBackground
+        {...this.props}
         onLoadEnd={this.onLoadEnd.bind(this)}
         onError={this.onError.bind(this)}
         style={[styles.backgroundImage, style]}
