@@ -8,7 +8,7 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native';
 
-import FastImage from 'react-native-fast-image';
+//import FastImage from 'react-native-fast-image';
 
 class ImageLoad extends React.Component {
   static propTypes = {
@@ -59,7 +59,7 @@ class ImageLoad extends React.Component {
       onPress,
     } = this.props;
     return (
-      <FastImage
+      <ImageBackground
         {...this.props}
         onLoadEnd={this.onLoadEnd.bind(this)}
         onError={this.onError.bind(this)}
@@ -108,7 +108,7 @@ class ImageLoad extends React.Component {
             }
           </View>
           */}
-      </FastImage>
+      </ImageBackground>
     );
   }
 
